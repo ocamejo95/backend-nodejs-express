@@ -11,18 +11,20 @@ const app = express();
 //Configurar cors
 app.use(cors());
 
+//Lectura y parseo del body
+app.use(express.json());
+
 //Base de datos
 dbConnection();
 
 
 //Rutas
-app.get('', (req, res) => {
-    res.json({
-        ok: true, message: 'Hola mundo'
-    });
-});
+app.use('/api/usuarios', require('./routes/usuarios.routes'));
+app.use('/api/medicos', require('./routes/medico.routes'));
+app.use('/api/hospitales', require('./routes/hospital.routes'));
+app.use('/api/auth', require('./routes/auth.routes'));
 
 
 app.listen(process.env.PORT, () => {
-    console.log('Server corriendo en el puerto' + process.env.PORT);
+    console.log('Server corriendo en el puerto' + ' ' + process.env.PORT);
 });
