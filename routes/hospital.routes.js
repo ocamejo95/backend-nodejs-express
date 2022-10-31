@@ -15,12 +15,13 @@ const {
 
 const router = Router();
 
-router.get('/', [
+router.get('/', validarJWT, getHospitales);
+
+router.post('/', [
     validarJWT,
     check('nombre', 'El nombre del hospital es obligatorio').not().isEmpty(),
-    validarCampos], getHospitales);
-
-router.post('/', [validarJWT], createHospitales);
+    check('usuario', 'El ID del usuario debe ser valido').isMongoId(),
+    validarCampos], createHospitales);
 
 router.put('/:id', [validarJWT], updateHospitales);
 
