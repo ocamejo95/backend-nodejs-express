@@ -1,6 +1,7 @@
 const Usuario = require("../models/usuario.model");
 const bcrypt = require('bcryptjs');
 const {generarJWT} = require("../helpers/jwt");
+const {verifyGoogle} = require("../helpers/google-verify");
 
 
 const login = async (req, res) => {
@@ -8,6 +9,7 @@ const login = async (req, res) => {
     const {password, email} = req.body;
 
     try {
+
 
         //Verifiar email
         const usuarioDB = await Usuario.findOne({email});
@@ -25,7 +27,7 @@ const login = async (req, res) => {
         }
 
         //Generar Token - JWT
-        const token = await generarJWT(usuarioDB.id, usuarioDB.nombre)
+        const token = await generarJWT(usuarioDB.id);
 
         res.json({token});
 
@@ -47,5 +49,36 @@ const renewToken = async (req, res) => {
 
 }
 
+const googleSign = async (req, res) => {
 
-module.exports = {login, renewToken};
+    const tokenGoogel = req.body.token;
+    try {
+
+        const {name, email, picture} = await verifyGoogle(tokenGoogel);
+        let usuario;
+
+        const usuarioDB = await Usuario.findOne({email});
+        if (usuarioDB) {
+            usuario = usuarioDB;
+            usuario.google = true;
+
+        } else {
+            usuario = new Usuario({
+                nombre: name, email, password: '', img: picture, google: true
+            });
+        }
+
+        await usuario.save();
+        const token = await generarJWT(usuario.id);
+
+        res.json({token});
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: 'El token no es correcto'});
+    }
+
+}
+
+
+module.exports = {login, renewToken, googleSign};
