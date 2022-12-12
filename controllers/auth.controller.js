@@ -41,11 +41,14 @@ const login = async (req, res) => {
 }
 
 const renewToken = async (req, res) => {
-
     const uid = req.uid;
+    //Generar token-jwt
     const token = await generarJWT(uid);
 
-    res.status(200).json({message: 'Nuevo token', token});
+    //Obtener usuario por uid
+    const usuario = await Usuario.findById(uid);
+
+    res.status(200).json({message: 'Nuevo token', token, usuario});
 
 }
 
