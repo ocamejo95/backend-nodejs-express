@@ -12,6 +12,6 @@ router.use(fileUpload());
 
 router.put('/:tipo/:id', validarJWT, uploadImg);
 
-router.get('/:tipo/:img', validarJWT, getImg);
+router.get('/:tipo/:img', getImg);
 
 module.exports = router;
