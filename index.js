@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 
 const express = require('express');
 const cors = require('cors');
@@ -28,6 +29,10 @@ app.use('/api/hospitales', require('./routes/hospital.routes'));
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/general', require('./routes/busqueda-general.routes'));
 app.use('/api/upload', require('./routes/upload.routes'));
+
+app.use('*', (req, res) =>{
+    res.sendfile(path.resolve( __dirname, 'public/index.htlm' ));
+});
 
 
 app.listen(process.env.PORT, () => {
