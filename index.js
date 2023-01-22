@@ -31,7 +31,7 @@ app.use('/api/general', require('./routes/busqueda-general.routes'));
 app.use('/api/upload', require('./routes/upload.routes'));
 
 app.use('*', (req, res) =>{
-    res.sendfile(path.resolve( __dirname, 'public/index.htlm' ));
+    res.sendfile(path.resolve( __dirname, 'public/index.html' ));
 });
 
 

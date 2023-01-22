@@ -1,10 +1,10 @@
 {
   "name": "04-backend-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "API NodeJ Express",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon index.js",
+    "dev": "nodemon index.js",
     "start": "node index.js"
   },
   "keywords": [],

@@ -3,13 +3,17 @@ const jwt = require('jsonwebtoken');
 const validarJWT = (req, res, next) => {
 
     //Leer el token
-    const token = req.header('x-token');
+    const token = req.header('Authorization');
     if (!token) {
         return res.status(401).json({message: 'No existe un token en la peticion'});
     }
     try {
 
-        const {uid} = jwt.verify(token, process.env.JWT_SECRET);
+        const bearer = token.split(" ");
+
+        const bearerToken = bearer[1];
+
+        const {uid} = jwt.verify(bearerToken, process.env.JWT_SECRET);
         req.uid = uid;
 
         next();
